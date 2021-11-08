@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Model %28복사본%29\" />
+    <Folder Include="Controller\" />
     <Folder Include="View\" />
   </ItemGroup>
 </Project>
