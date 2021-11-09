@@ -17,7 +17,7 @@ public class Book
 
     public Book(string id)
     {
-        this.id = id;
+        this.Id = id;
     }
 
     public string Id    // get/set method
