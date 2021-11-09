@@ -1,23 +1,28 @@
 ﻿using System;
 
 [Serializable]
-public class Book
+public class Book : DataProcessing
 {
     private string id;  // 도서번호
     private string name;    // 도서명
     private string publisher;   // 출판사명
     private string author;  // 저자명
     private string price;   // 가격
-    private string quantity;    // 수량
+    private int quantity;    // 수량
 
     public Book()
     {
         // 생성자
     }
 
-    public Book(string id)
+    public Book(string id, string name, string publisher, string author, string price, int quantity)
     {
-        this.Id = id;
+        Id = id;
+        Name = name;
+        Publisher = publisher;
+        Author = author;
+        Price = price;
+        Quantity = quantity;
     }
 
     public string Id    // get/set method
@@ -46,7 +51,7 @@ public class Book
         get; set;
     }
 
-    public string Quantity
+    public int Quantity
     {
         get; set;
     }

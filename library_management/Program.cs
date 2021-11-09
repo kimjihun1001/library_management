@@ -8,21 +8,26 @@ class Program
     static void Main(string[] args)
     {
         FileManagement file = new FileManagement();
-        //file.initializeBookFile();
 
-        //file.UpdateBookFile(FileManagement.bookList);
-        //foreach (Book book in FileManagement.bookList)
-        //{
-        //    Console.WriteLine($"Before {book.Id}");
-        //}
+        // 처음 bookInformation.dat 파일 만들때 사용
+        // file.initializeBookFile();
 
-        FileManagement.bookList = FileManagement.LoadBookFile(FileManagement.bookList);
+        FileManagement.bookList = file.LoadBookFile(FileManagement.bookList);
 
-        foreach (Book book in FileManagement.bookList)
+        foreach (Book books in FileManagement.bookList)
         {
-            Console.WriteLine($"After {book.Id}");
+            Console.WriteLine($"After {books.Id}");
         }
+
+        //User user = new User();
+        //Book book = new Book();
+        //bool a = user.SearchForID(FileManagement.bookList);
+        //bool b = book.SearchForID(FileManagement.userList);
+        //Console.WriteLine($"{a},{b}");
+
+        UI ui = new UI();
+
+        ui.View_1_1_1();
     }
-
-
+    
 }

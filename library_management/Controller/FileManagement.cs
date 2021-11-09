@@ -5,24 +5,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class FileManagement
 {
+    // 객체 저장할 리스트 생성 
     public static List<Book> bookList = new List<Book>();
+    public static List<User> userList = new List<User>();
 
     public FileManagement()
     {
-        //Book firstBook = new Book("1234");
-        //bookList.Add(firstBook);
-        //UpdateBookFile(bookList);
-
-        //foreach (Book books in bookList)
-        //{
-        //    Console.WriteLine($"{books.Id}");
-        //}
     }
 
     // file 읽기 : .dat file에서 데이터를 불러와 list에 저장
-    public static List<Book> LoadBookFile(List<Book> bookList)
+    // 받아온 list를 반환하도록!! (아직도 메소드 헷갈리냐 ㅠㅠ 이거에 2시간 썼네...)
+    public List<Book> LoadBookFile(List<Book> bookList)
     {
-        Stream ws;
         FileInfo fileBookInfo = new FileInfo("bookInfomation.dat");
 
         if (fileBookInfo.Exists)   // dat file이 존재한다면
@@ -53,22 +47,21 @@ public class FileManagement
         BinaryFormatter serializer = new BinaryFormatter();
         serializer.Serialize(ws, bookList);     //직렬화(저장)
         ws.Close();
-
     }
 
     // file 초기화: .dat file을 직접 만들어야 해서, 한 번 사용하고 주석 처리할 예정.
     // 메소드: 객체 생성 -> 리스트 생성 -> dat file 생성
-    //public void initializeBookFile()
-    //{
-    //    // 객체 생성
-    //    Book firstBook = new Book("1234");
-    //    Book secondBook = new Book("5678");
+    public void initializeBookFile()
+    {
+        // 객체 생성
+        Book firstBook = new Book();
+        Book secondBook = new Book();
 
-    //    // 리스트 생성
-    //    bookList.Add(firstBook);
-    //    bookList.Add(secondBook);
+        // 리스트 생성
+        bookList.Add(firstBook);
+        bookList.Add(secondBook);
 
-    //    // dat file 생성
-    //    UpdateBookFile(bookList);
-    //}
+        // dat file 생성
+        UpdateBookFile(bookList);
+    }
 }
