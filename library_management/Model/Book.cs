@@ -9,6 +9,7 @@ public class Book : DataProcessing
     private string author;  // 저자명
     private string price;   // 가격
     private int quantity;    // 수량
+    //private int number;     // 검색 리스트용 넘버
 
     public Book()
     {
@@ -52,6 +53,11 @@ public class Book : DataProcessing
     }
 
     public int Quantity
+    {
+        get; set;
+    }
+
+    public int Number
     {
         get; set;
     }
