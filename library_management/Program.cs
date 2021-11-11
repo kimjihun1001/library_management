@@ -8,34 +8,17 @@ class Program
     static void Main(string[] args)
     {
         FileManagement file = new FileManagement();
+        UI ui = new UI();
 
         // 처음 bookInformation.dat 파일 만들때 사용
         //file.initializeBookFile();
 
+        // bookList는 static 변수이므로 클래스 이름 사용
+        // LoadBookFile은 static이 아닌 메소드이므로 객체 이름 사용
         FileManagement.bookList = file.LoadBookFile(FileManagement.bookList);
+        FileManagement.userList = file.LoadUserFile(FileManagement.userList);
 
-        foreach (Book books in FileManagement.bookList)
-        {
-            Console.WriteLine($"After {books.Id}");
-        }
-
-        UI ui = new UI();
-
-        User user = new User();
-
-        FileManagement.userList = user.LoadUserFile(FileManagement.userList);
-        foreach (User users in FileManagement.userList)
-        {
-            Console.WriteLine($"After {users.Id}");
-        }
-
-        //ui.View_1_4();
-        //ui.View_Main();
-
-        //user.BorrowBook("");
-
-        ui.ReadNumber();
-
+        ui.View_Main();
 
     }
     

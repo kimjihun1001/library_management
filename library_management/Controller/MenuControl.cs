@@ -3,7 +3,7 @@
 [Serializable]
 public class MenuControl
 {
-    public string ReadString()    //string 입력하는 메소드, 뒤로가기때문에
+    public string ReadString()    // ESC, Enter, Backspace / 한글, 영어, 숫자, 스페이스
     {
         string readString = "";
         ConsoleKeyInfo key;
@@ -12,13 +12,14 @@ public class MenuControl
             key = Console.ReadKey(true);
 
             if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Escape
-                && IsKoreanString(key))
+                && IsString(key))
             {
                 readString += key.KeyChar;
                 Console.Write(key.KeyChar);
+                Console.Write("y" + readString);
             }
             else if (key.Key == ConsoleKey.Backspace && readString.Length > 0)
-            {
+            {   
                 int lastIndex = readString.Length - 1;
                 if (readString[lastIndex] >= '가' && readString[lastIndex] <= '힣')       //한글일경우
                 {
@@ -90,21 +91,48 @@ public class MenuControl
         }
     }
 
-    public bool IsNumber(ConsoleKeyInfo key)      //한글영어숫자만을 입력받기 위해인지 테스트
+    public bool IsNumber(ConsoleKeyInfo key)      //입력값이 숫자인지 체크
     {
         char trying = key.KeyChar;
-        if (key == null) return false;
+        if (key == null) return false;  // 이 부분이 동작을 안하는 것 같긴 한데... 일단 그냥 쓰자. 나중에 확인해보기 
         if ((key.KeyChar >= '0' && key.KeyChar <= '9'))
             return true;
         return false;
     }
 
-    public bool IsKoreanString(ConsoleKeyInfo key)      //한글영어숫자만을 입력받기 위해인지 테스트
+    public bool IsString(ConsoleKeyInfo key)      //입력값이 한글, 영어, 숫자, 스페이스인지 체크
     {
         char trying = key.KeyChar;
         if (key == null) return false;
         if ((key.KeyChar >= 'a' && key.KeyChar <= 'z') || (key.KeyChar >= 'A' && key.KeyChar <= 'Z') || (key.KeyChar >= '0' && key.KeyChar <= '9') ||
             (key.KeyChar >= '가' && key.KeyChar <= '힣') || key.KeyChar == ' ')
+            return true;
+        return false;
+    }
+
+    public bool IsKorean(ConsoleKeyInfo key)    //입력값이 한글, 스페이스인지 체크
+    {
+        char trying = key.KeyChar;
+        if (key == null) return false;
+        if ((key.KeyChar >= '가' && key.KeyChar <= '힣') || key.KeyChar == ' ')
+            return true;
+        return false;
+    }
+
+    public bool IsEnglish(ConsoleKeyInfo key)    //입력값이 영어, 스페이스인지 체크
+    {
+        char trying = key.KeyChar;
+        if (key == null) return false;
+        if ((key.KeyChar >= 'a' && key.KeyChar <= 'z') || (key.KeyChar >= 'A' && key.KeyChar <= 'Z') || key.KeyChar == ' ')
+            return true;
+        return false;
+    }
+
+    public bool IsEnglishOrNumber(ConsoleKeyInfo key)    //입력값이 영어, 숫자, 스페이스인지 체크
+    {
+        char trying = key.KeyChar;
+        if (key == null) return false;
+        if ((key.KeyChar >= 'a' && key.KeyChar <= 'z') || (key.KeyChar >= 'A' && key.KeyChar <= 'Z') || (key.KeyChar >= '0' && key.KeyChar <= '9') || key.KeyChar == ' ')
             return true;
         return false;
     }
