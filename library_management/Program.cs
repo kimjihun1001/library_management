@@ -29,10 +29,12 @@ class Program
             Console.WriteLine($"After {users.Id}");
         }
 
-        ui.View_1_4();
+        //ui.View_1_4();
         //ui.View_Main();
 
         //user.BorrowBook("");
+
+        ui.ReadNumber();
 
 
     }

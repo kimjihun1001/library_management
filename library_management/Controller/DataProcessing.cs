@@ -15,61 +15,78 @@ public class DataProcessing : FileManagement
 
     // 검색
     // 책 이름 
-    public void SearchForName(List<Book> list, string input)
+    public void SearchBookForName(string input)
     {
-        int i = 0;
-        foreach (Book book in list)
+        foreach (Book book in bookList)
         {
             if (book.Name.Contains(input))
             {
-                i++;
-                book.Number = i;
                 searchedBookList.Add(book);
             }
         }
     }
-
+    // 검색
     // 회원 이름  
-    public void SearchForName(List<User> list, string input)
+    public void SearchUserForName(string input)
     {
-        int i = 0;
-        foreach (User user in list)
+        foreach (User user in userList)
         {
             if (user.Name.Contains(input))
             {
-                i++;
-                user.Number = i;
                 searchedUserList.Add(user);
             }
         }
     }
-
+    // 검색
     // 책 출판사 
-    public void SearchForPublisher(List<Book> list, string input)
+    public void SearchForPublisher(string input)
     {
-        int i = 0;
-        foreach (Book book in list)
+        foreach (Book book in bookList)
         {
             if (book.Publisher.Contains(input))
             {
-                i++;
-                book.Number = i;
+                searchedBookList.Add(book);
+            }
+        }
+    }
+    // 검색
+    // 책 저자명 
+    public void SearchForAuthor(string input)
+    {
+        foreach (Book book in bookList)
+        {
+            if (book.Author.Contains(input))
+            {
                 searchedBookList.Add(book);
             }
         }
     }
 
-    // 책 저자명 
-    public void SearchForAuthor(List<Book> list, string input)
+    // 삭제
+    // 도서
+    public void RemoveBook(string input)
     {
-        int i = 0;
-        foreach (Book book in list)
+        foreach (Book book in bookList)
         {
-            if (book.Author.Contains(input))
+            if (book.Id == input)
             {
-                i++;
-                book.Number = i;
-                searchedBookList.Add(book);
+                bookList.Remove(book);
+                UpdateBookFile(bookList);
+                Console.WriteLine($"<{book.Name}>이 도서 리스트에서 삭제되었습니다.");
+            }
+        }
+    }
+    // 삭제
+    // 회원
+    public void RemoveUser(string input)
+    {
+        foreach (User user in userList)
+        {
+            if (user.Id == input)
+            {
+                userList.Remove(user);
+                UpdateUserFile(userList);
+                Console.WriteLine($"<{user.Name}>이 회원 리스트에서 삭제되었습니다.");
             }
         }
     }
@@ -89,6 +106,8 @@ public class DataProcessing : FileManagement
                 {
                     currentUser.BorrowedBook.Add(book);
                     book.Quantity--;
+                    HistoryOfBorrow(book);
+                    UpdateBookFile(bookList);
                     Console.WriteLine($"<{book.Name}> 대출 완료했습니다.");
                 }
             }
@@ -104,6 +123,8 @@ public class DataProcessing : FileManagement
             {
                 currentUser.BorrowedBook.Remove(book);
                 book.Quantity++;
+                HistoryOfReturn(book);
+                UpdateBookFile(bookList);
                 Console.WriteLine($"<{book.Name}> 반납 완료했습니다.");
             }
             else
@@ -113,6 +134,37 @@ public class DataProcessing : FileManagement
         }
     }
 
+    // 도서 대출 기록
+    public void HistoryOfBorrow(Book book)
+    {
+        BookHistory bookHistory = new BookHistory(currentUser.Name, book.Name);
+        bookHistory.BorrowTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        bookHistoryList.Add(bookHistory);
+    }
+
+    // 도서 반납 기록
+    public void HistoryOfReturn(Book book)
+    {
+        BookHistory bookHistory = new BookHistory(currentUser.Name, book.Name);
+        bookHistory.ReturnTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        bookHistoryList.Add(bookHistory);
+    }
+
+    // 신규 책 등록
+    public void AddNewBook(string id, string name, string publisher, string author, string price, int quantity)
+    {
+        Book book= new Book(id, name, publisher, author, price, quantity);
+        bookList.Add(book);
+        UpdateBookFile(bookList);
+    }
+
+    // 신규 회원 등록
+    public void AddNewUser(string id, string password, string name, int age, string phoneNumber, string address)
+    {
+        User user = new User(id, password, name, age, phoneNumber, address);
+        userList.Add(user);
+        UpdateUserFile(userList);
+    }
 
     // 로그인 확인 과정
     // 아이디 

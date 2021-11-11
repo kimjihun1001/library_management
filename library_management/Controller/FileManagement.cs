@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
 [Serializable]
-public class FileManagement
+public class FileManagement : Exception
 {
     // 객체 저장할 리스트 생성 
     public static List<Book> bookList = new List<Book>();
     public static List<User> userList = new List<User>();
+    public static List<BookHistory> bookHistoryList = new List<BookHistory>();
 
     public FileManagement()
     {
@@ -32,7 +33,7 @@ public class FileManagement
         // dat file로부터 받아온 데이터가 저장된 리스트
         return bookList;
     }
-
+    // Book
     // file 쓰기 : list에 저장된 데이터를 .dat file에 저장
     public void UpdateBookFile(List<Book> bookList)
     {
@@ -51,7 +52,7 @@ public class FileManagement
         serializer.Serialize(ws, bookList);     //직렬화(저장)
         ws.Close();
     }
-
+    // Book
     // file 초기화: .dat file을 직접 만들어야 해서, 한 번 사용하고 주석 처리할 예정.
     // 메소드: 객체 생성 -> 리스트 생성 -> dat file 생성
     public void initializeBookFile()
@@ -82,6 +83,7 @@ public class FileManagement
 
 
     // User
+    // file 읽기 
     public List<User> LoadUserFile(List<User> userList)
     {
         FileInfo fileUserInfo = new FileInfo("userInfomation.dat");
@@ -97,7 +99,7 @@ public class FileManagement
         // dat file로부터 받아온 데이터가 저장된 리스트
         return userList;
     }
-
+    // User
     // file 쓰기 : list에 저장된 데이터를 .dat file에 저장
     public void UpdateUserFile(List<User> userList)
     {
@@ -116,4 +118,42 @@ public class FileManagement
         serializer.Serialize(ws, userList);     //직렬화(저장)
         ws.Close();
     }
+
+    // BookHistory
+    // file 읽기 
+    public List<BookHistory> LoadBookHistoryFile(List<BookHistory> bookHistoryList)
+    {
+        FileInfo fileBookHistoryInfo = new FileInfo("bookHistory.dat");
+
+        if (fileBookHistoryInfo.Exists)   // dat file이 존재한다면
+        {
+            Stream rs = new FileStream("bookHistory.dat", FileMode.Open); //일단 불러온다.
+            BinaryFormatter deserializer = new BinaryFormatter();
+            bookHistoryList = (List<BookHistory>)deserializer.Deserialize(rs);       //역직렬화,리스트에 저장함.
+            rs.Close();
+        }
+
+        // dat file로부터 받아온 데이터가 저장된 리스트
+        return bookHistoryList;
+    }
+    // User
+    // file 쓰기 : list에 저장된 데이터를 .dat file에 저장
+    public void UpdateBookHistoryFile(List<BookHistory> bookHistoryList)
+    {
+        Stream ws;
+        FileInfo fileBookHistoryInfo = new FileInfo("bookHistory.dat");
+
+        if (!fileBookHistoryInfo.Exists)       //파일이 없을경우, 생성
+        {
+            ws = new FileStream("bookHistory.dat", FileMode.Create);
+            ws.Close();
+        }
+
+        // 리스트를 dat file에 새로 업데이트 
+        ws = new FileStream("bookHistory.dat", FileMode.Open);
+        BinaryFormatter serializer = new BinaryFormatter();
+        serializer.Serialize(ws, bookHistoryList);     //직렬화(저장)
+        ws.Close();
+    }
+
 }

@@ -28,7 +28,14 @@ public class UI : DataProcessing
     {
         foreach (User user in list)
         {
-            Console.WriteLine(user.Name);
+            Console.WriteLine($"ID: {user.Id}");
+            Console.WriteLine($"이름: {user.Name}");
+            Console.WriteLine($"나이: {user.Age}");
+            Console.WriteLine($"전화 번호: {user.PhoneNumber}");
+            Console.WriteLine($"주소: {user.Address}");
+            Console.WriteLine($"대출한 책: {user.BorrowedBook.Count}권");
+            Console.WriteLine($"대출한 책 리스트");
+            View_BookList(user.BorrowedBook);
         }
     }
 
@@ -81,7 +88,7 @@ public class UI : DataProcessing
     }
 
     // 책 이름으로 검색
-    public void View_1_1_1() 
+    public void View_1_1_1()
     {
         while (true)
         {
@@ -94,7 +101,7 @@ public class UI : DataProcessing
             // 예외처리하는 메소드 만들기
 
             // 검색 리스트 생성
-            SearchForName(FileManagement.bookList, input);
+            SearchBookForName(input);
             if (searchedBookList.Count == 0)
             {
                 Console.WriteLine("검색 결과가 없습니다. 다시 입력하세요. ");
@@ -104,6 +111,81 @@ public class UI : DataProcessing
                 View_BookList(searchedBookList);
             }
         }
+    }
+    // 회원 정보
+    public void View_1_5()
+    {
+        Console.WriteLine($"ID: {currentUser.Id}");
+        Console.WriteLine($"이름: {currentUser.Name}");
+        Console.WriteLine($"나이: {currentUser.Age}");
+        Console.WriteLine($"전화 번호: {currentUser.PhoneNumber}");
+        Console.WriteLine($"주소: {currentUser.Address}");
+        Console.WriteLine($"대출한 책: {currentUser.BorrowedBook.Count}권");
+        Console.WriteLine($"대출한 책 리스트");
+        View_BookList(currentUser.BorrowedBook);
+    }
+
+    // 전체 회원 리스트
+    public void View_3_1()
+    {
+        View_UserList(userList);
+    }
+
+    // 회원 검색
+    public void View_3_2()
+    {
+        while (true)
+        {
+            View_Title();
+            Console.WriteLine("검색하실 책 이름을 입력하세요: ");
+
+            // 입력받는 메소드 만들기
+            string input = "가";
+
+            // 예외처리하는 메소드 만들기
+
+            // 검색 리스트 생성
+            SearchUserForName(input);
+            if (searchedBookList.Count == 0)
+            {
+                Console.WriteLine("검색 결과가 없습니다. 다시 입력하세요. ");
+            }
+            else
+            {
+                View_BookList(searchedBookList);
+            }
+        }
+
+    }
+
+    // 책 대출, 반납 기록
+    public void View_3_8()
+    {
+        foreach (BookHistory bookHistory in bookHistoryList)
+        {
+            if (bookHistory.BorrowTime != null)
+            {
+                Console.WriteLine($"{bookHistory.BorrowTime}: \"{bookHistory.UserName}\"님이 <{bookHistory.BookName}> 도서를 대출하셨습니다.");
+            }
+            else
+            {
+                Console.WriteLine($"{bookHistory.ReturnTime}: \"{bookHistory.UserName}\"님이 <{bookHistory.BookName}> 도서를 반납하셨습니다.");
+            }
+        }
+    }
+
+    // 신규 책 등록
+    public void View_3_5()
+    {
+        string id = Console.ReadLine();
+        string name = Console.ReadLine();
+        string publisher = Console.ReadLine();
+        string author = Console.ReadLine();
+        string price = Console.ReadLine();
+        int quantity = int.Parse(Console.ReadLine());
+
+        AddNewBook(id, name, publisher, author, price, quantity);
+        Console.WriteLine("신규 도서 등록이 완료되었습니다.");
     }
 
     // 회원가입
@@ -116,9 +198,7 @@ public class UI : DataProcessing
         string phoneNumber = Console.ReadLine();
         string address = Console.ReadLine();
 
-        User user = new User(id, password, name, age, phoneNumber, address);
-        userList.Add(user);
-        UpdateUserFile(userList);
+        AddNewUser(id, password, name, age, phoneNumber, address);
         Console.WriteLine("회원 가입이 완료되었습니다.");
     }
 
