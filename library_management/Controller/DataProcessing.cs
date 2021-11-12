@@ -101,20 +101,27 @@ public class DataProcessing : FileManagement
     {
         foreach (Book book in searchedBookList)
         {
-            if (book.Id == input)
+            foreach (Book book1 in currentUser.borrowedBook)
             {
-                if (book.Quantity == 0)
+                if (book1.Id == input)
                 {
-                    Console.Write("대출 가능한 책이 없습니다. 다시 입력해주세요: ");
+                    Console.WriteLine("이미 대출한 책입니다. 다시 입력해주세요: ");
                 }
-                else
+                else if (book.Id == input)
                 {
-                    currentUser.borrowedBook.Add(book);
-                    book.Quantity--;
-                    HistoryOfBorrow(book);
-                    UpdateBookFile(bookList);
-                    Console.WriteLine($"<{book.Name}> 대출 완료했습니다.");
-                    return true;
+                    if (book.Quantity == 0)
+                    {
+                        Console.Write("대출 가능한 책이 없습니다. 다시 입력해주세요: ");
+                    }
+                    else
+                    {
+                        currentUser.borrowedBook.Add(book);
+                        book.Quantity--;
+                        HistoryOfBorrow(book);
+                        UpdateBookFile(bookList);
+                        Console.WriteLine($"<{book.Name}> 대출 완료했습니다.");
+                        return true;
+                    }
                 }
             }
         }
