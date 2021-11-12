@@ -78,6 +78,72 @@ public class MenuControl
         }
     }
 
+    public string ReadEnglishOrNumber()
+    {
+        string input = "";
+        ConsoleKeyInfo key;
+        while (true)
+        {
+            key = Console.ReadKey(true);
+            if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Escape
+              && IsEnglishOrNumber(key))
+            {
+                input += key.KeyChar;
+                Console.Write(key.KeyChar);
+            }
+            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+            {
+                input = input.Substring(0, (input.Length - 1));
+                Console.Write("\b \b");
+            }
+
+            else if (key.Key == ConsoleKey.Escape)      //ESC이면 NULL 반환.
+            {
+                return "\0";
+            }
+
+            else if (key.Key == ConsoleKey.Enter)       //엔터누르면 값반환.
+            {
+                if (input == "")
+                    continue;
+                return input;
+            }
+        }
+    }
+
+    public string ReadKorean()
+    {
+        string input = "";
+        ConsoleKeyInfo key;
+        while (true)
+        {
+            key = Console.ReadKey(true);
+            if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Escape
+              && IsKorean(key))
+            {
+                input += key.KeyChar;
+                Console.Write(key.KeyChar);
+            }
+            else if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+            {
+                input = input.Substring(0, (input.Length - 1));
+                Console.Write("\b \b");
+            }
+
+            else if (key.Key == ConsoleKey.Escape)      //ESC이면 NULL 반환.
+            {
+                return "\0";
+            }
+
+            else if (key.Key == ConsoleKey.Enter)       //엔터누르면 값반환.
+            {
+                if (input == "")
+                    continue;
+                return input;
+            }
+        }
+    }
+
     public string ReadESC()    //ESC만 입력하는 메소드
     {
         ConsoleKeyInfo key;
