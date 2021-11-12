@@ -101,30 +101,50 @@ public class DataProcessing : FileManagement
     {
         foreach (Book book in searchedBookList)
         {
-            foreach (Book book1 in currentUser.borrowedBook)
+            if (book.Id == input)
             {
-                if (book1.Id == input)
+                if (book.Quantity == 0)
                 {
-                    Console.WriteLine("이미 대출한 책입니다. 다시 입력해주세요: ");
+                    Console.Write("대출 가능한 책이 없습니다. 다시 입력해주세요: ");
                 }
-                else if (book.Id == input)
+                else
                 {
-                    if (book.Quantity == 0)
-                    {
-                        Console.Write("대출 가능한 책이 없습니다. 다시 입력해주세요: ");
-                    }
-                    else
-                    {
-                        currentUser.borrowedBook.Add(book);
-                        book.Quantity--;
-                        HistoryOfBorrow(book);
-                        UpdateBookFile(bookList);
-                        Console.WriteLine($"<{book.Name}> 대출 완료했습니다.");
-                        return true;
-                    }
+                    currentUser.borrowedBook.Add(book);
+                    book.Quantity--;
+                    HistoryOfBorrow(book);
+                    UpdateBookFile(bookList);
+                    Console.WriteLine($"<{book.Name}> 대출 완료했습니다.");
+                    return true;
                 }
             }
         }
+
+        //foreach (Book book in searchedBookList)
+        //{
+        //    foreach (Book book1 in currentUser.borrowedBook)
+        //    {
+        //        if (book1.Id == input)
+        //        {
+        //            Console.WriteLine("이미 대출한 책입니다. 다시 입력해주세요: ");
+        //        }
+        //        else if (book.Id == input)
+        //        {
+        //            if (book.Quantity == 0)
+        //            {
+        //                Console.Write("대출 가능한 책이 없습니다. 다시 입력해주세요: ");
+        //            }
+        //            else
+        //            {
+        //                currentUser.borrowedBook.Add(book);
+        //                book.Quantity--;
+        //                HistoryOfBorrow(book);
+        //                UpdateBookFile(bookList);
+        //                Console.WriteLine($"<{book.Name}> 대출 완료했습니다.");
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //}
         return false;
     }
 
@@ -152,6 +172,7 @@ public class DataProcessing : FileManagement
         BookHistory bookHistory = new BookHistory(currentUser.Name, book.Name);
         bookHistory.BorrowTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
         bookHistoryList.Add(bookHistory);
+        UpdateBookHistoryFile(bookHistoryList);
     }
 
     // 도서 반납 기록
@@ -160,6 +181,7 @@ public class DataProcessing : FileManagement
         BookHistory bookHistory = new BookHistory(currentUser.Name, book.Name);
         bookHistory.ReturnTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
         bookHistoryList.Add(bookHistory);
+        UpdateBookHistoryFile(bookHistoryList);
     }
 
     // 신규 책 등록

@@ -17,6 +17,7 @@ class Program
         // LoadBookFile은 static이 아닌 메소드이므로 객체 이름 사용
         FileManagement.bookList = file.LoadBookFile(FileManagement.bookList);
         FileManagement.userList = file.LoadUserFile(FileManagement.userList);
+        FileManagement.bookHistoryList = file.LoadBookHistoryFile(FileManagement.bookHistoryList);
 
         ui.View_Main();
 

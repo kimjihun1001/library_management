@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class UI : DataProcessing
 {
     public UI()
@@ -376,7 +377,7 @@ public class UI : DataProcessing
                     string input2 = ReadEnglishOrNumber();
                     if (input2 == "\0")
                         break;
-                    bool check = BorrowBook(input2);
+                    bool check = ReturnBook(input2);
                     if (check)
                         break;
                     else
@@ -976,7 +977,7 @@ public class UI : DataProcessing
             View_Title();
             foreach (BookHistory bookHistory in bookHistoryList)
             {
-                if (bookHistory.BorrowTime != "\0")
+                if (bookHistory.BorrowTime != null)
                 {
                     Console.WriteLine($"{bookHistory.BorrowTime}: \"{bookHistory.UserName}\"님이 <{bookHistory.BookName}> 도서를 대출하셨습니다.");
                 }
