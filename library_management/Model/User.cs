@@ -10,23 +10,8 @@ public class User : DataProcessing
     private int age;   // 나이
     private string phoneNumber;  // 전화번호
     private string adress;   // 주소
-    private List<Book> borrowedBook = new List<Book>();    // 대출한 책
+    public List<Book> borrowedBook = new List<Book>();    // 대출한 책
     //private int number;     // 검색 리스트용 넘버
-
-    public User()
-    {
-        // 생성자
-    }
-
-    public User(string id, string password, string name, int age, string phoneNumber, string address)
-    {
-        Id = id;
-        Password = password;
-        Name = name;
-        Age = age;
-        PhoneNumber = phoneNumber;
-        Address = address;
-    }
 
     public string Id    // get/set method
     {
@@ -67,5 +52,22 @@ public class User : DataProcessing
     public int Number
     {
         get; set;
+    }
+
+    public User()
+    {
+        // 생성자
+        Book book = new Book();
+        borrowedBook.Add(book);
+    }
+
+    public User(string id, string password, string name, int age, string phoneNumber, string address)
+    {
+        Id = id;
+        Password = password;
+        Name = name;
+        Age = age;
+        PhoneNumber = phoneNumber;
+        Address = address;
     }
 }

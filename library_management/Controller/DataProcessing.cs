@@ -4,7 +4,8 @@ using System.Collections.Generic;
 [Serializable]
 public class DataProcessing : FileManagement
 {
-    public static User currentUser;
+    public static User currentUser = new User();
+    public static Book currentBook = new Book();
 
     public static List<Book> searchedBookList = new List<Book>();
     public static List<User> searchedUserList = new List<User>();
@@ -64,7 +65,7 @@ public class DataProcessing : FileManagement
 
     // 삭제
     // 도서
-    public void RemoveBook(string input)
+    public bool RemoveBook(string input)
     {
         foreach (Book book in bookList)
         {
@@ -73,12 +74,14 @@ public class DataProcessing : FileManagement
                 bookList.Remove(book);
                 UpdateBookFile(bookList);
                 Console.WriteLine($"<{book.Name}>이 도서 리스트에서 삭제되었습니다.");
+                return true;
             }
         }
+        return false;
     }
     // 삭제
     // 회원
-    public void RemoveUser(string input)
+    public bool RemoveUser(string input)
     {
         foreach (User user in userList)
         {
@@ -87,12 +90,14 @@ public class DataProcessing : FileManagement
                 userList.Remove(user);
                 UpdateUserFile(userList);
                 Console.WriteLine($"<{user.Name}>이 회원 리스트에서 삭제되었습니다.");
+                return true;
             }
         }
+        return false;
     }
 
     // 책 대출 
-    public void BorrowBook(string input)
+    public bool BorrowBook(string input)
     {
         foreach (Book book in searchedBookList)
         {
@@ -100,38 +105,38 @@ public class DataProcessing : FileManagement
             {
                 if (book.Quantity == 0)
                 {
-                    Console.WriteLine("대출 가능한 책이 없습니다.");
+                    Console.Write("대출 가능한 책이 없습니다. 다시 입력해주세요: ");
                 }
                 else
                 {
-                    currentUser.BorrowedBook.Add(book);
+                    currentUser.borrowedBook.Add(book);
                     book.Quantity--;
                     HistoryOfBorrow(book);
                     UpdateBookFile(bookList);
                     Console.WriteLine($"<{book.Name}> 대출 완료했습니다.");
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     // 책 반납
-    public void ReturnBook(string input)
+    public bool ReturnBook(string input)
     {
-        foreach (Book book in currentUser.BorrowedBook)
+        foreach (Book book in currentUser.borrowedBook)
         {
             if (book.Id == input)
             {
-                currentUser.BorrowedBook.Remove(book);
+                currentUser.borrowedBook.Remove(book);
                 book.Quantity++;
                 HistoryOfReturn(book);
                 UpdateBookFile(bookList);
                 Console.WriteLine($"<{book.Name}> 반납 완료했습니다.");
-            }
-            else
-            {
-                Console.WriteLine("잘못 입력했습니다.");
+                return true;
             }
         }
+        return false;
     }
 
     // 도서 대출 기록
@@ -221,5 +226,37 @@ public class DataProcessing : FileManagement
             totalQuantity += book.Quantity;
         }
         return totalQuantity;
+    }
+
+    // 책 정보 체크
+    // 책 ID
+    public bool CheckBookID(string id)
+    {
+        foreach (Book book in bookList)
+        {
+            if (book.Id == id)
+                return true;
+        }
+        return false;
+    }
+    // 책 이름, 저자가 같은 경우
+    public bool CheckBookNameAndAuthor(string name, string publisher, string author)
+    {
+        foreach (Book book in bookList)
+        {
+            if (book.Id == name && book.Publisher == publisher && book.Author == author)
+                return true;
+        }
+        return false;
+    }
+    // 책 이름이 공백인지 체크
+    public bool CheckEmpty(string input)
+    {
+        for (int i=0; i<input.Length; i++)
+        {
+            if (input[i] != ' ')
+                return false;
+        }
+        return true;
     }
 }
